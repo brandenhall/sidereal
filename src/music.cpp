@@ -1,6 +1,9 @@
 #include <Arduino.h>
+#include <FastLED.h>
+#include "leds.h"
 #include "music.h"
 
+bool visualizeMusic = false;
 bool musicPlaying = false;
 uint musicIndex = 0;
 uint musicEnd = 0;
@@ -9,6 +12,7 @@ unsigned long musicStartTime = 0;
 music *currentMusic;
 const uint8_t malletPins[] = {33, 34, 35, 36, 37, 38, 39, 40};
 unsigned long malletTimes[] = {0, 0, 0, 0, 0, 0, 0, 0};
+const uint8_t visualizeRings[] = {0, 1, 2, 3, 4, 0, 1, 2};
 
 music attractTheme0[] = {
     {0, 64},
@@ -230,6 +234,17 @@ void updateMusic(unsigned long now)
                     if (((chord >> i) & 0x01) == 1)
                     {
                         swingMallet(i, now);
+                        if (visualizeMusic)
+                        {
+                            uint8_t ring = visualizeRings[i];
+                            for (uint8_t j = 0; j < 6; ++j)
+                            {
+                                for (uint8_t k = 0; k < sideRingSizes[5 - ring]; ++k)
+                                {
+                                    sideLEDs[j][sideRings[5 - ring][k]] = colors[ring];
+                                }
+                            }
+                        }
                     }
                 }
 

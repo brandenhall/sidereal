@@ -2,6 +2,7 @@
 #include <FastLED.h>
 #include "../io.h"
 #include "../leds.h"
+#include "../mode.h"
 #include "../music.h"
 
 uint8_t postStep = 0;
@@ -64,6 +65,7 @@ void testPrizeRelease(unsigned long now)
 void setupPostMode(unsigned long now)
 {
   Serial.println("Setup POST mode...");
+  writeLog("Mode: POST");
   enableButtons();
   for (uint8_t i = 0; i < 6; ++i)
   {

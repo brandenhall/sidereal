@@ -9,17 +9,20 @@
 #define MODE_PLAY 5
 #define MODE_SOLVE 6
 #define MODE_WIN 7
-#define MODE_COOLDOWN 8
+#define MODE_DISPENSE 8
+#define MODE_COOLDOWN 9
 
 extern uint8_t currentMode;
 extern unsigned long modeStartTime;
 extern uint8_t currentLevel;
 extern uint8_t gameState[];
 extern const uint8_t levelScrambles[];
-extern const uint8_t levelStates[];
+extern const uint8_t levelNumStates[];
 
 void changeMode(uint8_t nextMode, unsigned long now);
 void loopMode(unsigned long now);
+void setupLog();
+void writeLog(String message);
 void printGameState();
 
 #endif

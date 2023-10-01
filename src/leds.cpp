@@ -11,6 +11,8 @@ const uint8_t topSectors[][10] = {
     {3, 5, 4, 12, 13, 14, 18, 17, 16, 15},
 };
 
+const uint8_t topSectorCenters[] = {6, 10, 23, 30, 26, 13};
+
 const uint8_t topRing0[] = {18};
 const uint8_t topRing1[] = {11, 12, 17, 25, 24, 19};
 const uint8_t topRing2[] = {7, 6, 5, 13, 16, 26, 29, 30, 31, 23, 20, 10};
@@ -166,7 +168,7 @@ CRGBSet topLEDs[6] = {
 
 const CRGB colors[] = {
     CRGB(255, 0, 0),
-    CRGB(255, 127, 0),
+    CRGB(255, 80, 0),
     CRGB(255, 255, 0),
     CRGB(0, 255, 0),
     CRGB(0, 127, 255),

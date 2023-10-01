@@ -11,11 +11,14 @@ void setup()
   bool postFlag = false;
 
   Serial.begin(9600);
-  Serial.println("Starting Sidereal...");
+  Serial.println("Powering up Sidereal...");
   delay(2000);
 
+  randomSeed(analogRead(A9));
   setupLEDs();
   setupButtons();
+  setupLog();
+  writeLog("Power On");
 
   // check for if we enter POST mode
   delay(1000);
@@ -35,7 +38,7 @@ void setup()
   }
   else
   {
-    changeMode(MODE_STARTUP, now);
+    changeMode(MODE_ATTRACT, now);
   }
 }
 

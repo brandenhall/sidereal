@@ -18,6 +18,7 @@
 #define NUM_TOP_LEDS 37
 
 extern const uint8_t topSectors[][10];
+extern const uint8_t topSectorCenters[];
 
 extern const uint8_t topRing0[];
 extern const uint8_t topRing1[];

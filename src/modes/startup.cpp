@@ -12,11 +12,13 @@ uint8_t startupSideRing = 0;
 void setupStartupMode(unsigned long now)
 {
   Serial.println("Setup Startup mode...");
+  writeLog("Mode: Startup");
   playMusic(mainTheme, mainThemeSize, now);
   FastLED.clear();
   startupFrame = 0;
   startupSideColor = 0;
   startupSideRing = 0;
+  currentLevel = 0;
   disableButtons();
 }
 
@@ -45,7 +47,6 @@ void loopStartupMode(unsigned long now)
 
     if (!musicPlaying)
     {
-      currentLevel = 0;
       changeMode(MODE_SCRAMBLE, now);
     }
   }

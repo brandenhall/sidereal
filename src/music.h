@@ -9,6 +9,7 @@ struct music
     uint8_t chord;
 };
 
+extern bool visualizeMusic;
 extern bool musicPlaying;
 
 extern const uint attractThemeSizes[];
@@ -20,7 +21,7 @@ extern music *levelThemes[];
 extern music mainTheme[];
 extern const uint mainThemeSize;
 extern music solveTheme[];
-extern const uint mainThemeSize;
+extern const uint solveThemeSize;
 extern music winTheme[];
 extern const uint winThemeSize;
 

@@ -19,27 +19,32 @@ bool levelThemePlaying = false;
 void setupScrambleMode(unsigned long now)
 {
     Serial.println("Setup Startup mode...");
+    writeLog("Mode: Scramble");
 
     // scramble the game state for the level
     bool ready = false;
-    uint8_t levelState = levelStates[currentLevel];
+    uint8_t levelState = levelNumStates[currentLevel];
     while (!ready)
     {
-        gameState[0] = 0;
-        gameState[1] = 0;
-        gameState[2] = 0;
-        gameState[3] = 0;
-        gameState[4] = 0;
-        gameState[5] = 0;
+        gameState[0] = currentLevel;
+        gameState[1] = currentLevel;
+        gameState[2] = currentLevel;
+        gameState[3] = currentLevel;
+        gameState[4] = currentLevel;
+        gameState[5] = currentLevel;
 
+        Serial.print("Scramble: ");
         for (uint8_t i = 0; i < levelScrambles[currentLevel]; ++i)
         {
             uint8_t facet = random(6);
+            Serial.print(facet);
+            Serial.print(" ");
             uint8_t left = (facet + 5) % 6;
             uint8_t right = (facet + 7) % 6;
             gameState[left] = (gameState[left] + levelState - 1) % levelState;
             gameState[right] = (gameState[right] + levelState - 1) % levelState;
         }
+        Serial.println("");
 
         ready = false;
         for (uint8_t i = 1; i < 6; ++i)
@@ -70,35 +75,35 @@ void setupScrambleMode(unsigned long now)
 
 void loopScrambleMode(unsigned long now)
 {
-    if (now - modeStartTime < 2500)
+    EVERY_N_MILLISECONDS(30)
     {
-        EVERY_N_MILLISECONDS(30)
+        for (uint8_t i = 0; i < 6; ++i)
         {
-            for (uint8_t i = 0; i < 6; ++i)
+            sideLEDs[i].fadeToBlackBy(128);
+            topLEDs[i].fadeToBlackBy(128);
+        }
+        if (now - modeStartTime > 2000 && sectorBuildIndex <= 10)
+        {
+            if (!levelThemePlaying)
             {
-                sideLEDs[i].fadeToBlackBy(64);
-                topLEDs[i].fadeToBlackBy(64);
+                levelThemePlaying = true;
+                playMusic(levelThemes[currentLevel], levelThemeSizes[currentLevel], now);
             }
-        }
-    }
-    else if (sectorBuildIndex < 10)
-    {
-        if (!levelThemePlaying)
-        {
-            levelThemePlaying = true;
-            playMusic(levelThemes[currentLevel], levelThemeSizes[currentLevel], now);
-        }
-        EVERY_N_MILLISECONDS(100)
-        {
             for (uint8_t i = 0; i < 6; ++i)
             {
-                topLEDs[i][topSectors[gameState[i]][sectorBuild[i][sectorBuildIndex]]] = colors[gameState[i]];
+                for (uint8_t j = 0; j < sectorBuildIndex; ++j)
+                {
+                    topLEDs[i][topSectors[gameState[i]][sectorBuild[i][j]]] = colors[gameState[i]];
+                }
             }
             sectorBuildIndex += 1;
         }
     }
     else
     {
-        changeMode(MODE_PLAY, now);
+        if (sectorBuildIndex > 10)
+        {
+            changeMode(MODE_PLAY, now);
+        }
     }
 }
