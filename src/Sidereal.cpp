@@ -19,18 +19,25 @@ void setup()
   setupButtons();
   setupLog();
   writeLog("Power On");
+  FastLED.clear();
+  FastLED.show();
 
   // check for if we enter POST mode
-  delay(1000);
-
-  for (uint8_t i = 0; i < 6; ++i)
+  Serial.println("Waiting for POST...");
+  enableButtons();
+  unsigned long postTime = millis();
+  while (millis() - postTime < 5000)
   {
-    if (digitalRead(buttonPins[i]) == LOW)
+    for (uint8_t i = 0; i < 6; ++i)
     {
-      postFlag = true;
+      if (digitalRead(buttonPins[i]) == LOW)
+      {
+        postFlag = true;
+      }
     }
   }
 
+  disableButtons();
   now = millis();
   if (postFlag)
   {
